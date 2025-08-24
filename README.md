@@ -1,5 +1,13 @@
 # responsibleAI-proyecto01
 
+## Integrantes
+
+- Brian Carrillo
+- Carlos López
+- Josué Morales
+- Arturo Argueta
+- Diego Alonzo
+
 ## EDA
 
 ### Valores faltantes
@@ -46,3 +54,18 @@ Se observa cierto sesgo a ciertas edades alrededor de los 20 a 50 años, esto ti
 
 ### Variables representativas
 
+Se proponen las siguientes variables para el modelo:
+
+![alt text](img/image-5.png)
+Se observa que no existen variables cuantitativas correlacionadas por lo que se supone independencia entre las mismas.
+
+![alt text](img/image-6.png)
+Dado que se observa que no existe una tendencia entre estas dos variables de ingreso o pérdida, realmente al estar directamente relacionadas con ganancia o pérdida se supondría que dichas variables podrían contribuír al modelo para detectar correctamente si es o no un ingreso mayor a 50k.
+![alt text](img/image-7.png)
+Se observa que existe una mayor tendencia a que el hombre gane más, al menos proporcionalmente, por lo que esto podría suponer otro factor que contribuya al modelo.
+![alt text](img/image-8.png)
+La educación, en ciertos niveles si puede suponer una mayor probabilidad de ganar 50k por lo que se propone como una de las variables para el modelo.
+![alt text](img/image-9.png)
+Definitivamente ser o no casado dentro de este dataset puede significar una mayor probabilidad de que tenga un ingreso mayor o no a 50k.
+![alt text](img/image-10.png)
+Dependiendo de la ocupación que se disponga, igulamente existe una mayor probabilidad de que se gane más dinero.
