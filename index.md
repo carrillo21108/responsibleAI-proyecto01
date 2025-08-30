@@ -58,38 +58,52 @@ El EDA (ver notebook) reporta distribuciones por categoría, estadísticas numé
 
 **Gráficas (EDA)**
 
-Trabajo (workclass)
-![Workclass](img/image.png)
-
-Educación
-![Educación](img/image-1.png)
-
-Raza
-![Raza](img/image-2.png)
-
-País (native_country)
-![País](img/image-3.png)
-
-Edad
-![Edad](img/image-4.png)
-
-Variables representativas (correlaciones numéricas)
-![Numéricas](img/image-5.png)
-
-Capital gain vs capital loss
-![Capital](img/image-6.png)
-
-Sexo vs objetivo (>50K)
-![Sexo](img/image-7.png)
-
-Educación vs objetivo (>50K)
-![Educación vs target](img/image-8.png)
-
-Estado civil vs objetivo (>50K)
-![Marital status](img/image-9.png)
-
-Ocupación vs objetivo (>50K)
-![Ocupación](img/image-10.png)
+<div style="display:flex; flex-wrap:wrap; gap:16px; justify-content:flex-start;">
+	<figure style="margin:0; width:calc(33.333% - 16px); min-width:220px;">
+		<img src="img/image.png" alt="Workclass" style="width:100%; height:auto; display:block; border:1px solid #eee; border-radius:4px;" />
+		<figcaption style="text-align:center; font-size:0.9em; margin-top:4px;">Trabajo (workclass)</figcaption>
+	</figure>
+	<figure style="margin:0; width:calc(33.333% - 16px); min-width:220px;">
+		<img src="img/image-1.png" alt="Educación" style="width:100%; height:auto; display:block; border:1px solid #eee; border-radius:4px;" />
+		<figcaption style="text-align:center; font-size:0.9em; margin-top:4px;">Educación</figcaption>
+	</figure>
+	<figure style="margin:0; width:calc(33.333% - 16px); min-width:220px;">
+		<img src="img/image-2.png" alt="Raza" style="width:100%; height:auto; display:block; border:1px solid #eee; border-radius:4px;" />
+		<figcaption style="text-align:center; font-size:0.9em; margin-top:4px;">Raza</figcaption>
+	</figure>
+	<figure style="margin:0; width:calc(33.333% - 16px); min-width:220px;">
+		<img src="img/image-3.png" alt="País (native_country)" style="width:100%; height:auto; display:block; border:1px solid #eee; border-radius:4px;" />
+		<figcaption style="text-align:center; font-size:0.9em; margin-top:4px;">País (native_country)</figcaption>
+	</figure>
+	<figure style="margin:0; width:calc(33.333% - 16px); min-width:220px;">
+		<img src="img/image-4.png" alt="Edad" style="width:100%; height:auto; display:block; border:1px solid #eee; border-radius:4px;" />
+		<figcaption style="text-align:center; font-size:0.9em; margin-top:4px;">Edad</figcaption>
+	</figure>
+	<figure style="margin:0; width:calc(33.333% - 16px); min-width:220px;">
+		<img src="img/image-5.png" alt="Correlaciones numéricas" style="width:100%; height:auto; display:block; border:1px solid #eee; border-radius:4px;" />
+		<figcaption style="text-align:center; font-size:0.9em; margin-top:4px;">Correlaciones numéricas</figcaption>
+	</figure>
+	<figure style="margin:0; width:calc(33.333% - 16px); min-width:220px;">
+		<img src="img/image-6.png" alt="Capital gain vs capital loss" style="width:100%; height:auto; display:block; border:1px solid #eee; border-radius:4px;" />
+		<figcaption style="text-align:center; font-size:0.9em; margin-top:4px;">Capital gain vs capital loss</figcaption>
+	</figure>
+	<figure style="margin:0; width:calc(33.333% - 16px); min-width:220px;">
+		<img src="img/image-7.png" alt=": Sexo vs >50K" style="width:100%; height:auto; display:block; border:1px solid #eee; border-radius:4px;" />
+		<figcaption style="text-align:center; font-size:0.9em; margin-top:4px;">Sexo vs objetivo (>50K)</figcaption>
+	</figure>
+	<figure style="margin:0; width:calc(33.333% - 16px); min-width:220px;">
+		<img src="img/image-8.png" alt="Educación vs >50K" style="width:100%; height:auto; display:block; border:1px solid #eee; border-radius:4px;" />
+		<figcaption style="text-align:center; font-size:0.9em; margin-top:4px;">Educación vs objetivo (>50K)</figcaption>
+	</figure>
+	<figure style="margin:0; width:calc(33.333% - 16px); min-width:220px;">
+		<img src="img/image-9.png" alt="Estado civil vs >50K" style="width:100%; height:auto; display:block; border:1px solid #eee; border-radius:4px;" />
+		<figcaption style="text-align:center; font-size:0.9em; margin-top:4px;">Estado civil vs objetivo (>50K)</figcaption>
+	</figure>
+	<figure style="margin:0; width:calc(33.333% - 16px); min-width:220px;">
+		<img src="img/image-10.png" alt="Ocupación vs >50K" style="width:100%; height:auto; display:block; border:1px solid #eee; border-radius:4px;" />
+		<figcaption style="text-align:center; font-size:0.9em; margin-top:4px;">Ocupación vs objetivo (>50K)</figcaption>
+	</figure>
+</div>
 
 
 ## 3) Pipeline y modelos
