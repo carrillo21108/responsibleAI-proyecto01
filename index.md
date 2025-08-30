@@ -7,6 +7,7 @@ title: IA Responsable — Proyecto 01
 
 Este sitio resume el proyecto de **IA Responsable** aplicando los principios **FATE** (Fairness, Accountability, Transparency, Ethics) sobre el dataset **Adult Census Income (UCI)**. Se entrena un **modelo base** y una **versión mitigada** usando `class_weight="balanced"`, y se evalúa el desempeño **segmentado por grupos sensibles** (sexo, edad y raza).
 
+- **Repositorio**: [https://github.com/carrillo21108/responsibleAI-proyecto01](Enlace)
 - **Código completo**: [project-eda.ipynb](project-eda.ipynb) · [baseModel.ipynb](baseModel.ipynb)  
 - **Instrucciones de reproducción**: ver [README.md](README.md)
 
