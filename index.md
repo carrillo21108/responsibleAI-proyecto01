@@ -39,7 +39,58 @@ Los modelos de ML pueden **heredar o amplificar sesgos** presentes en los datos 
 - **Atributos sensibles**: `sex`, `race` y `age` (agrupada en bins).  
 El EDA (ver notebook) reporta distribuciones por categoría, estadísticas numéricas y manejo de “?” como `NaN` y posterior imputación/One-Hot.
 
----
+**Hallazgos clave del EDA**
+- **Distribución del target**: ~24% de la clase positiva (>50K) y ~76% de la negativa (<=50K) → desbalance moderado.
+- **Workclass**: predominio del sector privado (Private) frente a gobierno/cuenta propia → posible sesgo por sobrerrepresentación.
+- **Educación**: concentración entre secundaria–universidad; menor presencia en niveles extremos.
+- **Raza**: ~85% White; otras razas con bajo soporte → riesgo de alta varianza e inequidad si no se controla.
+- **País** (`native_country`): mayoría Estados Unidos; múltiples categorías raras con muy pocos registros.
+- **Edad**: mayor densidad entre 20–50 años (población laboral activa); útil estratificar en bins para análisis.
+
+**Tratamiento de datos (según EDA/Pipeline)**
+- Reemplazo de `"?"` por `NaN` en categóricas antes de estadísticas/plots.
+- Imputación: **mediana** (numéricas) y **moda** (categóricas).
+- Codificación: **OneHotEncoder(handle_unknown="ignore")** para robustez ante categorías no vistas.
+
+**Variables candidatas usadas**
+- Numéricas: `age`, `education_num`, `hours_per_week`, `capital_gain`, `capital_loss`.
+- Categóricas: `workclass`, `education`, `marital_status`, `occupation`, `sex`, `race`, `native_country`.
+
+**Gráficas (EDA)**
+
+Trabajo (workclass)
+![Workclass](img/image.png)
+
+Educación
+![Educación](img/image-1.png)
+
+Raza
+![Raza](img/image-2.png)
+
+País (native_country)
+![País](img/image-3.png)
+
+Edad
+![Edad](img/image-4.png)
+
+Variables representativas (correlaciones numéricas)
+![Numéricas](img/image-5.png)
+
+Capital gain vs capital loss
+![Capital](img/image-6.png)
+
+Sexo vs objetivo (>50K)
+![Sexo](img/image-7.png)
+
+Educación vs objetivo (>50K)
+![Educación vs target](img/image-8.png)
+
+Estado civil vs objetivo (>50K)
+![Marital status](img/image-9.png)
+
+Ocupación vs objetivo (>50K)
+![Ocupación](img/image-10.png)
+
 
 ## 3) Pipeline y modelos
 

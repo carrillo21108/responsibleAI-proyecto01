@@ -8,64 +8,154 @@
 - Arturo Argueta
 - Diego Alonzo
 
+## Objetivo del proyecto
+
+Construir un modelo base para predecir ingresos (>50K) con el dataset Adult Census (UCI) y evaluar rendimiento global y segmentado por grupos sensibles (sexo, edad, raza, país), analizando brechas de métricas y aplicando una mitigación simple (class_weight) para estudiar trade-offs de desempeño–equidad.
+
+## Estructura
+
+- `project-eda.ipynb`: análisis exploratorio de datos (distribuciones, correlaciones, sesgos iniciales).
+- `baseModel.ipynb`: preprocesamiento, entrenamiento (Regresión Logística y Árbol), métricas globales, evaluación segmentada y comparación sin/con `class_weight="balanced"`.
+- `requirements.txt`: librerías necesarias para ejecutar los notebooks.
+- `img/`: imágenes usadas en el EDA.
+
+## Requisitos
+
+- Windows 10/11, PowerShell (v5+)
+- Python 3.10–3.12 recomendado
+- pip actualizado
+
+Nota: los notebooks usan `kagglehub` para descargar automáticamente el dataset Adult (UCI). No se requiere configurar credenciales de Kaggle para este dataset público.
+
+## Configuración rápida (Windows PowerShell)
+
+1) Clonar el repositorio
+
+```powershell
+git clone https://github.com/carrillo21108/responsibleAI-proyecto01.git
+cd responsibleAI-proyecto01
+```
+
+2) Crear y activar entorno virtual
+
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate
+```
+
+3) Instalar dependencias
+
+```powershell
+pip install --upgrade pip
+pip install -r requirements.txt
+# Opcional (si el EDA lo requiere):
+pip install seaborn
+```
+
+## Cómo ejecutar
+
+Opción A — VS Code
+
+1) Abrir la carpeta del proyecto en VS Code.
+2) Seleccionar el kernel de Python del entorno `.venv` para los notebooks.
+3) Abrir `project-eda.ipynb` y/o `baseModel.ipynb` y ejecutar “Run All”.
+
+Opción B — Jupyter Notebook/Lab
+
+```powershell
+jupyter notebook
+# o
+jupyter lab
+```
+
+Abrir `project-eda.ipynb` y/o `baseModel.ipynb` y ejecutar las celdas en orden.
+
+## Datos
+
+Por defecto, `baseModel.ipynb` descarga el dataset Adult con:
+
+- `kagglehub.dataset_download("uciml/adult-census-income")`
+- Lee `adult.csv` desde la ruta descargada.
+
+Si ya tienes un CSV local, puedes indicar su ruta con la variable de entorno `ADULT_CSV` antes de ejecutar el notebook:
+
+```powershell
+$env:ADULT_CSV = "C:\\ruta\\a\\tu\\adult.csv"
+```
+
+El notebook detecta columnas numéricas/categóricas comunes del dataset Adult y mapea la etiqueta objetivo a binario (<=50K vs >50K).
+
+## Resultados esperados
+
+- EDA: tablas/resúmenes de datos, gráficos de distribución y correlación; notas sobre sesgos iniciales (p. ej., desbalance por sexo, edad, raza, país).
+- Modelo base: métricas globales (accuracy, F1, ROC AUC), matriz de confusión y reporte por clase.
+- Evaluación segmentada: tablas por `sex`, `age_bin`, `race` (y top-5 `native_country` si aplica) con `accuracy`, `f1`, `tpr`, `fpr`, `positive_rate`, más brechas (max–min).
+- Mitigación: comparación sin/con `class_weight="balanced"` destacando trade-offs (↑recall/TPR, ↑FPR, variación de positive rate).
+
+## Troubleshooting
+
+- Error al descargar datos con `kagglehub`: reintenta ejecutar la celda; verifica conexión/proxy. Como alternativa, descarga manualmente el CSV desde UCI/Kaggle y define `ADULT_CSV`.
+- Incompatibilidad de versiones: usa Python 3.10–3.12 y reinstala dependencias en un entorno limpio.
+- Kernel no detecta `.venv`: en VS Code, selecciona el intérprete de `.venv` (Command Palette → Python: Select Interpreter).
+
+## Reproducibilidad y notas
+
+- Semillas: `train_test_split(..., random_state=42)` para partición reproducible.
+- Pipelines: uso de `ColumnTransformer` + `OneHotEncoder(handle_unknown="ignore")` para robustez ante categorías nuevas.
+- Umbral: los modelos clasifican con umbral 0.5; ajustar umbral puede cambiar significativamente TPR/FPR y brechas.
+
 ## EDA
 
-### Valores faltantes
+### Resumen del dataset
 
-No hay valores faltantes aunque si hay varias columnas cualitativas que poseen datos desconocidos que son marcados como '?'.
+- 6 variables cuantitativas y 9 cualitativas.
+- Perfil modal (más frecuente): trabaja en sector privado, educación secundaria, casado, ocupación docente, hombre, blanco, estadounidense, e ingreso <= 50K.
+- Estadísticas rápidas: edad media ≈ 37, education_num ≈ 10, capital_gain ≈ 0, capital_loss ≈ 0, 40 horas/semana.
 
-### Descripción preliminar
+### Valores faltantes y desconocidos
 
-Hay 6 variables cuantitativas y 9 cualitativas.
-El perfil más común a nivel cualitativo sería aquel con las siguientes características: Trabajando en una institución privada, graduado de secundaria, casado, profesor, hombre, blanco, estadounidense y ingreso menor a 50k. Asimismo, la edad media es de 37 años, nivel de educación medio es 10, con una ganancia media anual de 0, pérdida media anual de 0 y trabajando 40 horas semanales (8 horas diarias).
-Esto permite observar que el perfil común no estaría ganando y estaría muy lejos de ganar arriba de 50k anuales.
+- No se observan NaN explícitos; varias columnas cualitativas usan el carácter `?` para “desconocido”.
 
-### Sesgos
+### Distribuciones y posibles sesgos
 
-#### Clase trabajadora
-
+#### Trabajo (workclass)
 ![alt text](img/image.png)
-
-Se observa un sesgo al haber una diferencia abismal entre las personas que trabajan en privado que en los demás tipos de empleo como puede ser que estén trabajando por su propia cuenta, trabajando para el gobierno, etcétera.
+Fuerte predominio del sector privado frente a otras clases laborales (cuenta propia, gobierno, etc.). Puede sesgar el modelo hacia este segmento.
 
 #### Educación
-
 ![alt text](img/image-1.png)
+Distribución concentrada entre secundaria y universidad; menor representación de niveles educativos extremos.
 
-Igualmente se observa aquí cierto sesgo en esta característica ya que existe una clara tendencia a solo observar personas con un nivel de educación de entre secundaria y universidad. Por lo que no se están tomando tan en cuenta otro tipo de personas con un menor nivel de educación.
-
-### Raza
-
+#### Raza
 ![alt text](img/image-2.png)
+>85% de la muestra es blanca. Riesgo de sesgos por baja representación de otras razas y peores estimaciones para esas minorías.
 
-Claramente aquí hay un sesgo de razas ya que más del 85% de la población de los datos son blancos por lo que el modelo pudiera estar sujeto a un sesgo en el cuál solo se analicen personas blancas correctamente, o que las personas de toda aquella raza que no sea blanca para este estudio haya tenido un ingreso mayor o menor a 50k lo que haría este modelo inservible para todos aquellos que no caigan en esta categoría.
-
-### País
-
+#### País (native_country)
 ![alt text](img/image-3.png)
+Muy pocos registros no estadounidenses. Conviene agrupar categorías raras o aplicar cortes/ponderaciones para evitar inestabilidad.
 
-Dado que existe muy pocos registros para poder evaluar personas de otros países que no sean estadounidenses, se recomienda descartar a todos aquellos que no pertenezcan a dicha nacionalidad ya que sino quedaría un modelo muy desbalanceado.
-
-### Edad
-
+#### Edad
 ![alt text](img/image-4.png)
+Mayor densidad entre 20–50 años (población laboral activa). Útil considerar estratificación por edad o focos de análisis en ese rango.
 
-Se observa cierto sesgo a ciertas edades alrededor de los 20 a 50 años, esto tiene sentido ya que es el rango de edad _útil_ de trabajo normalmente. Por lo que valdría la pena recortar el modelo para que se enfoque en dichas edades de forma que sea más certero al concentrarse en una población representativa en específico.
+### Variables candidatas para el modelo
 
-### Variables representativas
-
-Se proponen las siguientes variables para el modelo:
+Se proponen las siguientes variables por su relación con el objetivo (>50K):
 
 ![alt text](img/image-5.png)
-Se observa que no existen variables cuantitativas correlacionadas por lo que se supone independencia entre las mismas.
+No se observan correlaciones fuertes entre numéricas; sugiere independencia aproximada.
 
 ![alt text](img/image-6.png)
-Dado que se observa que no existe una tendencia entre estas dos variables de ingreso o pérdida, realmente al estar directamente relacionadas con ganancia o pérdida se supondría que dichas variables podrían contribuír al modelo para detectar correctamente si es o no un ingreso mayor a 50k.
+Capital_gain / capital_loss, aunque con muchos ceros, están conceptualmente relacionadas con la probabilidad de >50K.
+
 ![alt text](img/image-7.png)
-Se observa que existe una mayor tendencia a que el hombre gane más, al menos proporcionalmente, por lo que esto podría suponer otro factor que contribuya al modelo.
+Sexo: diferencias en la tasa de >50K sugieren poder predictivo (vigilar sesgos).
+
 ![alt text](img/image-8.png)
-La educación, en ciertos niveles si puede suponer una mayor probabilidad de ganar 50k por lo que se propone como una de las variables para el modelo.
+Educación: ciertos niveles elevan la probabilidad de >50K.
+
 ![alt text](img/image-9.png)
-Definitivamente ser o no casado dentro de este dataset puede significar una mayor probabilidad de que tenga un ingreso mayor o no a 50k.
+Estado civil: relación notable con ingresos >50K.
+
 ![alt text](img/image-10.png)
-Dependiendo de la ocupación que se disponga, igulamente existe una mayor probabilidad de que se gane más dinero.
+Ocupación: diferencias claras entre categorías; potencialmente informativa.
