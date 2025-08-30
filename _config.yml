@@ -1,0 +1,28 @@
+title: "IA Responsable — Proyecto 01"
+description: "Equidad, responsabilidad, transparencia y ética aplicadas a un modelo predictivo con Adult Census."
+theme: minima
+lang: es
+
+plugins:
+  - jekyll-seo-tag
+  - jekyll-feed
+
+# Páginas del encabezado (solo home por ahora)
+header_pages:
+  - index.md
+
+minima:
+  skin: auto
+  social_links:
+    - { platform: github, user_url: "https://github.com/carrillo21108" }
+    - { platform: github, user_url: "https://github.com/carrillo21108/responsibleAI-proyecto01" }
+
+# No procesar directorios de CI, pero sí publicar los .ipynb para que se puedan descargar
+exclude:
+  - .github
+  - "*.ipynb_checkpoints*"
+
+# Config markdown
+markdown: kramdown
+kramdown:
+  input: GFM
